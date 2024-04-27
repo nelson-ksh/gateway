@@ -1,0 +1,6 @@
+networks:
+  preprod:
+    chainId: preprod
+
+nativeCurrencySymbol: ADA
+gasLimitEstimate: 500000

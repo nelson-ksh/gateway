@@ -4,6 +4,10 @@ configurations:
     configurationPath: server.yml
     schemaPath: server-schema.json
 
+  $namespace cardano:
+    configurationPath: cardano.yml
+    schemaPath: cardano-schema.json
+
   $namespace algorand:
     configurationPath: algorand.yml
     schemaPath: algorand-schema.json

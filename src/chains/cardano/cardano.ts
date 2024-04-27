@@ -2,6 +2,7 @@ import LRUCache from 'lru-cache';
 import { getCardanoConfig } from './cardano.config';
 
 export class Cardano {
+  public nativeTokenSymbol;
   private static _instances: LRUCache<string, Cardano>;
   private _chain: string = 'cardano';
   private _network: string;
@@ -18,6 +19,8 @@ export class Cardano {
 
   constructor(network: string) {
     this._network = network;
+    const config = getCardanoConfig(network);
+    this.nativeTokenSymbol = config.nativeCurrencySymbol;
   }
 
   public static getInstance(network: string): Cardano {
@@ -39,6 +42,21 @@ export class Cardano {
     }
 
     return Cardano._instances.get(config.network.name) as Cardano;
+  }
+
+  public static getConnectedInstances(): { [name: string]: Cardano } {
+    const connectedInstances: { [name: string]: Cardano } = {};
+    if (this._instances !== undefined) {
+      const keys = Array.from(this._instances.keys());
+      for (const instance of keys) {
+        if (instance !== undefined) {
+          connectedInstances[instance] = this._instances.get(
+            instance
+          ) as Cardano;
+        }
+      }
+    }
+    return connectedInstances;
   }
 
   public async init(): Promise<void> {

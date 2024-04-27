@@ -21,6 +21,7 @@ import {
 } from '../services/connection-manager';
 import { Osmosis } from '../chains/osmosis/osmosis';
 import { XRPL } from '../chains/xrpl/xrpl';
+import { Cardano } from '../chains/cardano/cardano';
 
 export async function getStatus(
   req: StatusRequest
@@ -50,6 +51,11 @@ export async function getStatus(
       throw e;
     }
   } else {
+    const cardanoConnections = Cardano.getConnectedInstances();
+    connections = connections.concat(
+      cardanoConnections ? Object.values(cardanoConnections) : []
+    );
+
     const algorandConnections = Algorand.getConnectedInstances();
     connections = connections.concat(
       algorandConnections ? Object.values(algorandConnections) : []

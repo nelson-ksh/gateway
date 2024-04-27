@@ -46,9 +46,11 @@ import { XRPLCLOB } from '../connectors/xrpl/xrpl';
 import { QuipuSwap } from '../connectors/quipuswap/quipuswap';
 import { Carbonamm } from '../connectors/carbon/carbonAMM';
 import { Minswap } from '../connectors/minswap/minswap';
+import { Cardano } from '../chains/cardano/cardano';
 
 export type ChainUnion =
   | Algorand
+  | Cardano
   | Cosmos
   | Ethereumish
   | Nearish
@@ -60,23 +62,25 @@ export type ChainUnion =
 
 export type Chain<T> = T extends Algorand
   ? Algorand
-  : T extends Cosmos
-    ? Cosmos
-    : T extends Ethereumish
-      ? Ethereumish
-      : T extends Nearish
-        ? Nearish
-        : T extends Xdcish
-          ? Xdcish
-          : T extends Tezosish
-            ? Tezosish
-            : T extends XRPLish
-              ? XRPLish
-              : T extends KujiraCLOB
-                ? KujiraCLOB
-                : T extends Osmosis
-                  ? Osmosis
-                  : never;
+    : T extends Cardano
+      ? Cardano
+        :T extends Cosmos
+          ? Cosmos
+          : T extends Ethereumish
+            ? Ethereumish
+            : T extends Nearish
+              ? Nearish
+              : T extends Xdcish
+                ? Xdcish
+                : T extends Tezosish
+                  ? Tezosish
+                  : T extends XRPLish
+                    ? XRPLish
+                    : T extends KujiraCLOB
+                      ? KujiraCLOB
+                      : T extends Osmosis
+                        ? Osmosis
+                        : never;
 
 export class UnsupportedChainException extends Error {
   constructor(message?: string) {
@@ -115,6 +119,8 @@ export async function getChainInstance(
 
   if (chain === 'algorand') {
     connection = Algorand.getInstance(network);
+  } else if (chain === 'cardano') {
+    connection = Cardano.getInstance(network);
   } else if (chain === 'ethereum') {
     connection = Ethereum.getInstance(network);
   } else if (chain === 'avalanche') {
