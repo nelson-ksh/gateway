@@ -56,27 +56,27 @@ export type ChainUnion =
   | Tezosish
   | XRPLish
   | Kujira
-  | Osmosis;;
+  | Osmosis;
 
 export type Chain<T> = T extends Algorand
   ? Algorand
   : T extends Cosmos
-  ? Cosmos
-  : T extends Ethereumish
-  ? Ethereumish
-  : T extends Nearish
-  ? Nearish
-  : T extends Xdcish
-  ? Xdcish
-  : T extends Tezosish
-  ? Tezosish
-  : T extends XRPLish
-  ? XRPLish
-  : T extends KujiraCLOB
-  ? KujiraCLOB
-  : T extends Osmosis
-  ? Osmosis
-  : never;
+    ? Cosmos
+    : T extends Ethereumish
+      ? Ethereumish
+      : T extends Nearish
+        ? Nearish
+        : T extends Xdcish
+          ? Xdcish
+          : T extends Tezosish
+            ? Tezosish
+            : T extends XRPLish
+              ? XRPLish
+              : T extends KujiraCLOB
+                ? KujiraCLOB
+                : T extends Osmosis
+                  ? Osmosis
+                  : never;
 
 export class UnsupportedChainException extends Error {
   constructor(message?: string) {
@@ -92,7 +92,7 @@ export class UnsupportedChainException extends Error {
 
 export async function getInitializedChain<T>(
   chain: string,
-  network: string
+  network: string,
 ): Promise<Chain<T>> {
   const chainInstance = await getChainInstance(chain, network);
 
@@ -109,7 +109,7 @@ export async function getInitializedChain<T>(
 
 export async function getChainInstance(
   chain: string,
-  network: string
+  network: string,
 ): Promise<ChainUnion | undefined> {
   let connection: ChainUnion | undefined;
 
@@ -190,7 +190,7 @@ export async function getConnector<T>(
   chain: string,
   network: string,
   connector: string | undefined,
-  address?: string
+  address?: string,
 ): Promise<Connector<T>> {
   let connectorInstance: ConnectorUnion;
 
@@ -220,9 +220,15 @@ export async function getConnector<T>(
     connectorInstance = VVSConnector.getInstance(chain, network);
   } else if (chain === 'near' && connector === 'ref') {
     connectorInstance = Ref.getInstance(chain, network);
-  } else if (chain === 'binance-smart-chain' && connector === 'pancakeswap') {
+  } else if (
+    (chain === 'binance-smart-chain' || chain === 'ethereum') &&
+    connector === 'pancakeswap'
+  ) {
     connectorInstance = PancakeSwap.getInstance(chain, network);
-  } else if (chain === 'binance-smart-chain' && connector === 'pancakeswapLP') {
+  } else if (
+    (chain === 'binance-smart-chain' || chain === 'ethereum') &&
+    connector === 'pancakeswapLP'
+  ) {
     connectorInstance = PancakeswapLP.getInstance(chain, network);
   } else if (connector === 'sushiswap') {
     connectorInstance = Sushiswap.getInstance(chain, network);
