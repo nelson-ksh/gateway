@@ -45,6 +45,7 @@ import { PancakeswapLP } from '../connectors/pancakeswap/pancakeswap.lp';
 import { XRPLCLOB } from '../connectors/xrpl/xrpl';
 import { QuipuSwap } from '../connectors/quipuswap/quipuswap';
 import { Carbonamm } from '../connectors/carbon/carbonAMM';
+import { Minswap } from '../connectors/minswap/minswap';
 
 export type ChainUnion =
   | Algorand
@@ -154,6 +155,7 @@ export type ConnectorUnion =
   | RefAMMish
   | CLOBish
   | Tinyman
+  | Minswap
   | Plenty
   | XRPLCLOB
   | Curve
@@ -172,15 +174,17 @@ export type Connector<T> = T extends Uniswapish
           ? CLOBish
           : T extends Tinyman
             ? Tinyman
-            : T extends Plenty
-              ? Plenty
-              : T extends XRPLish
-                ? XRPLCLOB
-                : T extends KujiraCLOB
-                  ? KujiraCLOB
-                  : T extends QuipuSwap
-                    ? QuipuSwap
-                    : never;
+            : T extends Minswap
+              ? Minswap
+              : T extends Plenty
+                ? Plenty
+                : T extends XRPLish
+                  ? XRPLCLOB
+                  : T extends KujiraCLOB
+                    ? KujiraCLOB
+                    : T extends QuipuSwap
+                      ? QuipuSwap
+                      : never;
 
 export async function getConnector<T>(
   chain: string,
@@ -234,6 +238,8 @@ export async function getConnector<T>(
     connectorInstance = DexalotCLOB.getInstance(network);
   } else if (chain == 'algorand' && connector == 'tinyman') {
     connectorInstance = Tinyman.getInstance(network);
+  } else if (chain == 'algorand' && connector == 'minswap') {
+    connectorInstance = Minswap.getInstance(network);
   } else if (chain === 'tezos' && connector === 'plenty') {
     connectorInstance = Plenty.getInstance(network);
   } else if (chain === 'xrpl' && connector === 'xrpl') {

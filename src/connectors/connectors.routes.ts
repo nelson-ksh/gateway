@@ -24,6 +24,7 @@ import { KujiraConfig } from './kujira/kujira.config';
 import { QuipuswapConfig } from './quipuswap/quipuswap.config';
 import { OsmosisConfig } from '../chains/osmosis/osmosis.config';
 import { CarbonConfig } from './carbon/carbon.config';
+import { MinswapConfig } from './minswap/minswap.config';
 
 export namespace ConnectorsRoutes {
   export const router = Router();
@@ -136,6 +137,12 @@ export namespace ConnectorsRoutes {
             trading_type: TinymanConfig.config.tradingTypes,
             chain_type: TinymanConfig.config.chainType,
             available_networks: TinymanConfig.config.availableNetworks,
+          },
+          {
+            name: 'minswap',
+            trading_type: MinswapConfig.config.tradingTypes,
+            chain_type: MinswapConfig.config.chainType,
+            available_networks: MinswapConfig.config.availableNetworks,
           },
           {
             name: 'curve',

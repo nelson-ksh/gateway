@@ -52,6 +52,10 @@ configurations:
     configurationPath: tinyman.yml
     schemaPath: tinyman-schema.json
 
+  $namespace minswap:
+    configurationPath: minswap.yml
+    schemaPath: minswap-schema.json
+
   $namespace traderjoe:
     configurationPath: traderjoe.yml
     schemaPath: traderjoe-schema.json
